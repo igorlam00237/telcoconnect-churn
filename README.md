@@ -22,7 +22,7 @@ Il s'agit d'un projet Data Science **de bout en bout** :
 --
 
 ## 🗂️ Structure du projet
-
+```
 telcoconnect-churn/
 ├── data/          # Données brutes et nettoyées
 ├── notebooks/     # Analyses exploratoires
@@ -30,7 +30,7 @@ telcoconnect-churn/
 ├── app/           # Application Streamlit
 ├── models/        # Modèles sauvegardés
 └── reports/       # Graphiques et rapport final
-
+```
 --
 
 ## Comment lancer : à venir
