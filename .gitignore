@@ -1,0 +1,28 @@
+# Environnements virtuels
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+
+# Gros modèles (reproductibles via src/train_models.py)
+models/random_forest.pkl
+models/xgboost.pkl
+models/logistic_regression.pkl
+
+# Logs / temp
+*.log
+
+# Fichiers d'outils d'assistance (non versionnés)
+CLAUDE.md
+.claude/
+.cursor/
+.aider*
+.github/copilot*
