@@ -1,0 +1,16 @@
+feature,importance
+IsMonthly,0.48838475
+Contract,0.42765832
+StreamingTV,0.0035149583
+DeviceProtection,0.0034828568
+OnlineSecurity,0.0034453382
+StreamingMovies,0.0034243355
+AvgMonthlyCharge,0.0034194174
+IsSingle,0.003413131
+TotalCharges,0.0033273
+MonthlyCharges,0.0032397257
+PaymentMethod_Credit card (automatic),0.0032292104
+SeniorCitizen,0.0032202115
+Dependents,0.003215038
+PaperlessBilling,0.0031731273
+PaymentMethod_Electronic check,0.0031512822
