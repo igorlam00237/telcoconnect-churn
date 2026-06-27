@@ -159,12 +159,12 @@ if submitted:
 
     with r2:
         st.progress(min(proba, 1.0))
-        if proba >= 0.7:
+        if proba >= 0.6:
             level, advice = "🔴 Risque élevé", (
                 "Action immédiate : appel de rétention, offre de migration vers "
                 "un contrat annuel/2 ans, remise ciblée."
             )
-        elif proba >= 0.4:
+        elif proba >= 0.35:
             level, advice = "🟠 Risque modéré", (
                 "Surveiller : proposer des services additionnels (sécurité, "
                 "support) et inciter à un engagement plus long."
