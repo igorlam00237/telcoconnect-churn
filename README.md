@@ -32,6 +32,21 @@ de churn ; en contrat 2 ans, ~6 %.
 
 ---
 
+## 🖥️ Démonstration de l'application
+
+L'application Streamlit permet de saisir le profil d'un client et d'obtenir
+instantanément sa probabilité de churn, le niveau de risque et l'action recommandée.
+
+**Écran d'accueil — saisie des caractéristiques du client :**
+
+![Écran d'accueil de l'application](assets/app_home.png)
+
+**Résultat après une prédiction (client au contrat mensuel → risque élevé) :**
+
+![Résultat d'une prédiction](assets/app_prediction.png)
+
+---
+
 ## 🗂️ Structure du projet
 
 ```
@@ -100,15 +115,38 @@ jupyter notebook notebooks/06_Churn_prediction_ML_Model_Training.ipynb
 
 ---
 
-## 🧠 Choix techniques
+## 🧠 Comment fonctionne l'entraînement (expliqué simplement)
 
-- **Données quasi équilibrées** (~47 % de churn) → pas de rééchantillonnage ;
-  on privilégie **Recall** et **ROC-AUC** plutôt que l'Accuracy.
-- **Cross-validation stratifiée (5 plis)** pour comparer les modèles de façon robuste.
-- **RandomizedSearchCV** pour le tuning — qui n'a pas amélioré le modèle ici
-  (signal concentré dans une seule variable) : le **XGBoost de base** est retenu.
-- **`src/inference.py`** réplique exactement la logique de feature engineering des
-  notebooks 03 & 05 → garantit la cohérence train / production.
+Tout le détail commenté est dans
+[`notebooks/06_Churn_prediction_ML_Model_Training.ipynb`](notebooks/06_Churn_prediction_ML_Model_Training.ipynb).
+En quelques mots, pour quelqu'un qui découvre le Machine Learning :
+
+1. **Apprendre puis tester sur des données différentes.** On montre au modèle
+   75 % des clients (dont on connaît déjà le résultat) pour qu'il apprenne, et on
+   garde 25 % de côté — jamais vus — pour vérifier honnêtement s'il généralise.
+2. **Comparer plusieurs modèles, pas un seul.** On met en concurrence **5 modèles**
+   (Régression Logistique, Arbre de décision, Random Forest, HistGradientBoosting,
+   XGBoost) du plus simple au plus sophistiqué.
+3. **Juger de façon fiable (validation croisée).** Plutôt qu'un seul test (parfois
+   chanceux), on répète l'évaluation **5 fois** sur des découpages différents et on
+   regarde la moyenne. C'est la *cross-validation*.
+4. **Choisir les bonnes métriques.** Comme rater un futur partant coûte cher, on
+   privilégie le **Recall** (part des churners détectés) et le **ROC-AUC** (capacité
+   à bien classer), pas seulement le taux de bonnes réponses.
+5. **Régler finement (hyperparamètres).** On teste plusieurs **configurations** des
+   meilleurs modèles avec `RandomizedSearchCV` pour viser la meilleure performance.
+6. **Garder le meilleur, comprendre, déployer.** On sauvegarde le modèle gagnant
+   (`models/best_model.pkl`), on identifie **ce qui pousse les clients à partir**
+   (ici : le contrat mensuel), puis on l'utilise dans l'application Streamlit.
+
+### Choix techniques (résumé)
+- **Données quasi équilibrées** (~47 % de churn) → pas de rééchantillonnage.
+- **Cross-validation stratifiée 5 plis** pour une comparaison robuste.
+- Le **tuning n'améliore quasiment pas** les scores (tous les modèles plafonnent
+  ~0.79 d'AUC) → à écart négligeable, on retient **XGBoost** pour sa robustesse et
+  son **interprétabilité** (feature importance native).
+- **`src/inference.py`** réplique exactement le feature engineering des notebooks
+  03 & 05 → cohérence garantie entre entraînement et production.
 
 ---
 
